@@ -1,0 +1,26 @@
+// @import "@/assets/scss/reset.scss";
+@import '@/assets/scss/variables.scss';
+@import '@/assets/scss/mixins.scss';
+
+@font-face {
+  font-family: IBMPlexSans;
+  src: url('@/assets/fonts/IBMPlexSans-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: GeomanistWord;
+  src: url('@/assets/fonts/GeomanistWord-Medium.otf') format('opentype');
+  font-display: swap;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+p,label {
+  font-family: IBMPlexSans;
+}
