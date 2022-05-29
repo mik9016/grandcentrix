@@ -50,7 +50,7 @@ const formData: loginData = {
   password: "",
 };
 
-let error: boolean = ref(false);
+let error = ref(false);
 
 const router = useRouter();
 
@@ -58,13 +58,13 @@ function setFormData(e: string, option: string): string {
   return option === "email" ? (formData.email = e) : (formData.password = e);
 }
 
-function login(): void {
+function login(): any {
   if (+formData.email.length > 0 && +formData.password.length > 0) {
     error.value = false;
     return router.push("/devices");
   }
 
-  return (error.value = true);
+  error.value = true;
 }
 </script>
 

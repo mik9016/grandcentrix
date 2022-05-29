@@ -10,9 +10,9 @@
 
 <script setup lang="ts">
 interface Props {
-  title: string;
+  title: string | number;
   icon: string;
-  clickFunction: any;
+  clickFunction?: any;
   color: string;
   smallText?: string;
   size: string;

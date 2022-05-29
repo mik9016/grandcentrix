@@ -9,14 +9,14 @@
         size="large"
       />
     </div>
-    <p v-if="loading">is loading...</p>
-    <table class="tablesComponent__down" v-if="!loading">
+    <p v-if="state.loading">is loading...</p>
+    <table class="tablesComponent__down" v-if="!state.loading">
       <tr class="tablesComponent__down__columnNames">
         <th v-for="(column, idx) in columnNames" :key="idx">{{ column }}</th>
       </tr>
       <tr
         class="tablesComponent__down__content"
-        v-for="(device, idx) in devices"
+        v-for="(device, idx) in state.devices"
         :key="idx"
       >
         <th>
@@ -25,7 +25,7 @@
         <th class="tablesComponent__down__content__active">
           <p>Active</p>
           <div
-            v-if="!loading && device"
+            v-if="!state.loading && device"
             :class="`tablesComponent__down__content__active__dot ${
               device.active ? 'green' : 'red'
             }`"
@@ -39,8 +39,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, reactive } from "vue";
 import ButtonComponent from "../components/ButtonComponent.vue";
+import { TableState } from "../models/interfaces";
 
 import axios from "axios";
 export default defineComponent({
@@ -48,19 +49,20 @@ export default defineComponent({
     ButtonComponent,
   },
   setup() {
-    const url: string = "http://localhost:4000/devices";
-    const devices = ref([]);
-    let loading: boolean = ref(true);
-    const columnNames: string = ref(["Device", "Status", "Version", "Serial.No"]);
-
+    const state: TableState = reactive({
+      devices: [],
+      loading: true,
+    });
+    const url = import.meta.env.VITE_MOCKED_API_URL + "/devices";
+    const columnNames = ["Device", "Status", "Version", "Serial.No"];
     axios
       .get(url)
-      .then((res) => (devices.value = res.data))
+      .then((res) => (state.devices = res.data))
       .then(() => {
-        loading.value = false;
+        state.loading = false;
       });
 
-    return { devices, columnNames, loading };
+    return { columnNames, state };
   },
 });
 </script>

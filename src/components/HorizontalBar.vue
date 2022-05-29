@@ -1,7 +1,7 @@
 <template>
   <div class="horizontalBar">
     <ButtonComponent
-      v-for="(btn, idx) in buttons"
+      v-for="(btn, idx) in deviceButtons.buttons"
       :key="idx"
       :title="btn.title"
       :icon="btn.icon"
@@ -12,44 +12,49 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import ButtonComponent from "../components/ButtonComponent.vue";
-import { ref } from "vue";
+<script lang="ts">
+import { reactive, defineComponent } from "vue";
 import axios from "axios";
+import ButtonComponent from "../components/ButtonComponent.vue";
+import { DeviceButtons } from "../models/interfaces";
 
-const url: string = "http://localhost:4000/devices";
-const devices = ref([]);
+export default defineComponent({
+  components: {
+    ButtonComponent,
+  },
+  setup() {
+    const deviceButtons: DeviceButtons = reactive({
+      buttons: [],
+    });
 
-let loading: boolean = true;
-// TODO Get devices and set title property
-axios.get(url).then((res) => (devices.value = res.data));
+    const url: string = import.meta.env.VITE_MOCKED_API_URL + "/widgets";
 
-interface Button {
-  smallText: string;
-  icon: string;
-  title: string;
-  color: string;
-}
-const buttons: Button = [
-  {
-    smallText: "Active Devices",
-    icon: "ic-devices.svg",
-    title: "321",
-    color: "secondary",
+    axios.get(url).then((res: any) => {
+      deviceButtons.buttons = [
+        {
+          smallText: "Active Devices",
+          icon: "ic-devices.svg",
+          title: res.data.active_devices.value.toFixed(0),
+          color: "secondary",
+        },
+        {
+          smallText: "System Health",
+          icon: "ic-notificationHeart.svg",
+          title: res.data.health.value,
+          color: "primary",
+        },
+        {
+          smallText: "Energy Level",
+          icon: "ic-notificationHeart.svg",
+          title: res.data.energy.value,
+          color: "tertiary",
+        },
+      ];
+    });
+
+    return { deviceButtons };
   },
-  {
-    smallText: "System Health",
-    icon: "ic-notificationHeart.svg",
-    title: "321",
-    color: "primary",
-  },
-  {
-    smallText: "Energy Level",
-    icon: "ic-notificationHeart.svg",
-    title: "321",
-    color: "tertiary",
-  },
-];
+});
 </script>
 
 <style scoped lang="scss">

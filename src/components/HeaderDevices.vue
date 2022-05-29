@@ -15,7 +15,13 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 
-const navigation: string = ["Devices", "Preferences", "Support", "Account", "Signout"];
+const navigation: Array<string> = [
+  "Devices",
+  "Preferences",
+  "Support",
+  "Account",
+  "Signout",
+];
 
 const route = useRoute();
 const currentPath: string = route.path.substring(1);
@@ -49,6 +55,7 @@ function setNavigationColor(navigationItem: string): string {
   background-color: $bgCard;
   height: 60px;
   width: 100%;
+  padding-top: 1rem;
 
   &__img {
     align-self: flex-start;
