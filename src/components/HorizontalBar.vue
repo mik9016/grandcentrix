@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, defineComponent } from "vue";
+import { reactive, defineComponent, computed } from "vue";
 import axios from "axios";
 import ButtonComponent from "../components/ButtonComponent.vue";
 import { DeviceButtons } from "../models/interfaces";

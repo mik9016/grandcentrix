@@ -1,6 +1,6 @@
 <template>
   <button @click="clickFunction" :class="`${color} ${size}`">
-    <img :src="`src/assets/icons/${icon}`" alt="btn-icon" width="30" height="30" />
+    <img :src="imagePath" alt="btn-icon" width="30" height="30" />
     <section>
       <p v-if="smallText && smallText.length > 0" class="smallText">{{ smallText }}</p>
       <p>{{ title }}</p>
@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 interface Props {
   title: string | number;
   icon: string;
@@ -17,7 +18,11 @@ interface Props {
   smallText?: string;
   size: string;
 }
+
 const props = defineProps<Props>();
+const imagePath = computed(() => {
+  return new URL("../assets/icons/" + props.icon, import.meta.url).href;
+});
 </script>
 
 <style scoped lang="scss">

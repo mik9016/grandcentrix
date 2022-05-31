@@ -5,20 +5,20 @@ const state = {
 }
 
 const mutations = {
-  login(state) {
-    state.loggedIn = true
+  login(state: { loggedIn: boolean }, payload: { email: string; password: string }): void {
+    if (payload.email === 'mik@mik.de' && payload.password === 'mik') {
+      state.loggedIn = true
+    }
   },
-  logout(state) {
+  logout(state: { loggedIn: boolean }): void {
     state.loggedIn = false
   },
 }
 
-const actions = {
-
-}
+const actions = {}
 
 const getters = {
-  loggedInGetter: (state) => (state.loggedIn),
+  loggedInGetter: (state: { loggedIn: boolean }) => state.loggedIn,
 }
 
 export default createStore({

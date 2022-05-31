@@ -21,7 +21,7 @@
           @writes="setFormData($event, 'password')"
         />
       </section>
-      <div v-if="error" class="login__card__error">Fields can not be empty!</div>
+      <div v-if="error" class="login__card__error">{{ errorMsg }}</div>
       <ButtonComponent
         class="login__card__btn"
         title="Login"
@@ -36,21 +36,20 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import InputText from "../components/InputText.vue";
 import ButtonComponent from "../components/ButtonComponent.vue";
+import { useStore } from "vuex";
+import { LoginData } from "../models/interfaces";
 
-interface loginData {
-  email: string;
-  password: string;
-}
-
-const formData: loginData = {
+const store = useStore();
+const formData: LoginData = {
   email: "",
   password: "",
 };
 
 let error = ref(false);
+let errorMsg = ref("Fields can not be empty!");
 
 const router = useRouter();
 
@@ -61,10 +60,18 @@ function setFormData(e: string, option: string): string {
 function login(): any {
   if (+formData.email.length > 0 && +formData.password.length > 0) {
     error.value = false;
-    return router.push("/devices");
+    store.commit("login", formData);
+    const loginStatus = computed(() => store.state.loggedIn);
+    console.log(loginStatus.value);
+    if (loginStatus.value) {
+      return router.push("/devices");
+    }
+    error.value = true;
+    return (errorMsg.value = "False credentials!");
   }
 
   error.value = true;
+  errorMsg.value = "Fields can not be empty!";
 }
 </script>
 
@@ -81,6 +88,9 @@ function login(): any {
     width: 30%;
     height: fit-content;
     border-radius: 25px;
+    @include breakpoint-to(768px) {
+      width: 90%;
+    }
 
     &__error {
       border: 2px red solid;

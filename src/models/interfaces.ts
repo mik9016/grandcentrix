@@ -7,6 +7,11 @@ export interface DeviceButton {
 export interface DeviceButtons {
   buttons: Array<DeviceButton>
 }
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
 
 export interface TableState {
     devices: Array<TableEntry>,

@@ -1,7 +1,7 @@
 <template>
   <div class="inputText">
     <label>{{ label }}</label>
-    <input :type="type" v-model="data" @change="handleWriting()" /> />
+    <input :type="type" v-model="data" @change="handleWriting()" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ const data = ref("");
 
 const emit = defineEmits(["writes"]);
 
-const handleWriting = () => {
+const handleWriting = (): void => {
   emit("writes", data.value);
 };
 </script>

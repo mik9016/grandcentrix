@@ -1,11 +1,21 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import store from '../store/index'
 
+function guardStuff(to: { path: string },from: object, next: (arg0?: { name: string } ) => any) {
+  const loggedInStatus = store.getters.loggedInGetter
+  if(to.path !== '/login' && !loggedInStatus){
+   return next({name: 'login'})
+  }
+   next()
+
+}
 const routes: Array<RouteRecordRaw> = [
   { path: '', redirect: 'login' },
   {
     path: '/devices',
     name: 'Devices',
     component: () => import('@/pages/Devices.vue'),
+    beforeEnter: guardStuff,
   },
   {
     path: '/preferences',

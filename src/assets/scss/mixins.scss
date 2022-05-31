@@ -6,3 +6,14 @@
   align-items: $align;
   justify-content: $justify;
 }
+
+@mixin breakpoint-to($screenWidth) {
+  @media only screen and (max-width: $screenWidth) {
+    @content;
+  }
+}
+@mixin breakpoint-from-to($min, $max) {
+  @media only screen and (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}

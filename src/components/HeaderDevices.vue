@@ -6,7 +6,12 @@
 
     <ul class="headerNav__list">
       <li v-for="item in navigation" :key="item" :class="setNavigationColor(item)">
-        <router-link :to="`/${item.toLowerCase()}`">{{ item }}</router-link>
+        <router-link v-if="item !== 'Signout'" :to="`/${item.toLowerCase()}`">{{
+          item
+        }}</router-link>
+        <li v-else @click="logout">
+        <router-link  :to="`/login`" >{{ item }}</router-link>
+        </li>
       </li>
     </ul>
   </div>
@@ -14,7 +19,9 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
+const store = useStore();
 const navigation: Array<string> = [
   "Devices",
   "Preferences",
@@ -24,10 +31,14 @@ const navigation: Array<string> = [
 ];
 
 const route = useRoute();
-const currentPath: string = route.path.substring(1);
+const currentPath = route.path.substring(1);
 
 function setNavigationColor(navigationItem: string): string {
   return navigationItem.toLowerCase() === currentPath ? "underlined" : "notUnderlined";
+}
+
+function logout():void {
+  store.commit("logout");
 }
 </script>
 
